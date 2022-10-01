@@ -1,0 +1,27 @@
+{
+  "name": "race",
+  "version": "1.0.0",
+  "main": "results-local.js",
+  "scripts": {
+    "build": "webpack --config webpack.config.js --mode production",
+    "build-dev": "webpack --config webpack.config.js --mode development",
+    "start": "npx serve dist",
+    "start-https": "npx http-server -S key.pem -C cert.pem dist",
+    "start-src-https": "npx http-server -S key.pem -C cert.pem",
+    "dev-server": "npx webpack serve --mode development",
+    "dev-server-https": "npx webpack serve --https --mode development",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.7.1",
+    "html-webpack-plugin": "^5.5.0",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.11.1"
+  },
+  "description": ""
+}

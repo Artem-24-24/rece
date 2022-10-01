@@ -1,0 +1,12 @@
+td {
+    padding: 5px;
+}
+thead th{
+    cursor: pointer;
+}
+thead th:nth-child(odd){
+    background: #b4bac4;
+}
+thead th:nth-child(even){
+    background: #efdf94;
+}
