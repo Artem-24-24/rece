@@ -13,6 +13,7 @@ class App {
 
     constructor() {
         const container = document.createElement('TABLE')
+        container.className = 'sortable'
         document.body.appendChild(container)
         this.container = container
         this.loadData(this.prepareResults)
@@ -42,7 +43,8 @@ class App {
         heads.forEach((e,i) => {
             const cell = document.createElement("TH")
             headRow.append(cell)
-            cell.textContent = e
+            // cell.textContent = e
+            cell.innerHTML = `<button>${e}<span aria-hidden="true"></span></button>`
             cell.addEventListener('click', self.sort.bind(self, i, cell))
         })
         const bodyContent = tableContent.createTBody()
@@ -100,10 +102,10 @@ class App {
         }
         else if (i == 3) {
             cell.ariaSort = this.switchSort(cell.ariaSort)
-            if (cell.ariaSort == sorted.dsc) {
-                content.sort((a, b) => b.avgSpeed - a.avgSpeed )
+            if (cell.ariaSort == sorted.asc) {
+                content.sort((a, b) => a.avgSpeed - b.avgSpeed)
             } else if (cell.ariaSort == sorted.dsc) {
-                content.sort((a, b) => a.avgSpeed - b.avgSpeed )
+                content.sort((a, b) => b.avgSpeed - a.avgSpeed)
             }
         }
         this.updateContent(content)
