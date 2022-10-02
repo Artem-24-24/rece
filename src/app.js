@@ -31,7 +31,7 @@ class App {
                     car: columns[3],
                     lap: columns[4],
                     timeOfDay: columns[5],
-                    time: columns[6],
+                    time: this.parseTime(columns[6]),
                     avgSpeed: columns[7]
                 }
             })
@@ -51,11 +51,12 @@ class App {
             const row = bodyContent.insertRow()
             row.insertCell(0).textContent = el.no
             row.insertCell(1).textContent = el.driver
-            row.insertCell(2).textContent = el.time
+            row.insertCell(2).textContent = this.formatMillis(el.time)
             row.insertCell(3).textContent = el.avgSpeed
         })
         document.body.appendChild(tableContent)
     }
+
 
     loadData() {
         const self = this
@@ -81,6 +82,30 @@ class App {
                 content.sort((a, b) => -a.driver.localeCompare(b.driver))
             }
         }
+        else if (i == 0) {
+            cell.ariaSort = this.switchSort(cell.ariaSort)
+            if (cell.ariaSort == sorted.asc) {
+                content.sort((a, b) => a.no - b.no)
+            } else if (cell.ariaSort == sorted.dsc) {
+                content.sort((a, b) => b.no - a.no)
+            }
+        }
+        else if (i == 2) {
+            cell.ariaSort = this.switchSort(cell.ariaSort)
+            if (cell.ariaSort == sorted.dsc) {
+                content.sort((a, b) => b.time - a.time )
+            } else if (cell.ariaSort == sorted.dsc) {
+                content.sort((a, b) => a.time - b.time )
+            }
+        }
+        else if (i == 3) {
+            cell.ariaSort = this.switchSort(cell.ariaSort)
+            if (cell.ariaSort == sorted.dsc) {
+                content.sort((a, b) => b.avgSpeed - a.avgSpeed )
+            } else if (cell.ariaSort == sorted.dsc) {
+                content.sort((a, b) => a.avgSpeed - b.avgSpeed )
+            }
+        }
         this.updateContent(content)
     }
 
@@ -94,12 +119,33 @@ class App {
         }
     }
 
+    parseTime(time) {
+        const period = time.indexOf(".")
+        const colon = time.indexOf(":")
+
+        const millis = Number(time.substr(period + 1))
+        const sec = Number(time.substr(colon + 1, period - colon - 1))
+        const minute = Number(time.substr(0, colon))
+        const sum = minute * 60 * 1000 + sec * 1000 + millis
+
+        return sum
+    }
+
+    formatMillis(millis) {
+        const partMillis = millis % 1000
+
+        const sec = (millis - partMillis) / 1000
+        const partSec = sec % 60
+        const minutes = (sec - partSec) / 60
+        return `${minutes}:${partSec}.${"0".repeat(3 - String(partMillis).length) + partMillis}`
+    }
+
     updateContent(data) {
         const rows = this.tableBody.rows
         data.forEach((el, i) => {
             rows[i].cells[0].textContent = el.no
             rows[i].cells[1].textContent = el.driver
-            rows[i].cells[2].textContent = el.time
+            rows[i].cells[2].textContent = this.formatMillis(el.time)
             rows[i].cells[3].textContent = el.avgSpeed
         })
         return undefined;
